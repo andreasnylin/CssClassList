@@ -6,6 +6,7 @@ First a bit of background why I created this.
 
 I often find code like this where string concatenation is used to create output the CSS classes of elements. This works but it is a bit hard to read and it is a lot of code for a simple task. Adding or changing a class would require some thought. It is also hard to tell if a certain class has been added to the list or if we have added a white space to separate the classes.
 
+```
 @{
 	var cssClass = "menu-item";
 
@@ -23,11 +24,13 @@ I often find code like this where string concatenation is used to create output 
 	
 }
 <li class="@cssClass"><a href="@menuItem.Url">@menuItem.Text</a></li>
+```
 
 ---
 
 A better, more clean aproach would be to use a list of strings to store the classes. It can be done this way. This is better because we don't have to keep track of any white space and we can easilly remove a value or check if the list contains a value. However it is still a lot of code.
 
+```
 @{
 	var cssClass = new HashSet<string>() { "menu-item" };
 
@@ -51,11 +54,10 @@ A better, more clean aproach would be to use a list of strings to store the clas
 	}	
 }
 <li class="string.Join(" ", cssClass)"><a href="@menuItem.Url">@menuItem.Text</a></li>
-
----
+```
 
 Here is the same code using the CSS Class List Helper. As you can see it requires less code.
-
+```
 @{
 	var cssClass = new CssClassList("menu-item");
 	cssClass.AddIf(menuItem.IsActive, "active");
@@ -64,8 +66,11 @@ Here is the same code using the CSS Class List Helper. As you can see it require
 }
 
 <li class="@cssClass.ToString()"><a href="@menuItem.Url">@menuItem.Text</a></li>
+```
 
+## How to use
 
+```
 var cssClasses = new CssClassList();
 
 cssClasses.Add("apple");
@@ -81,3 +86,4 @@ cssClasses.RenderList();
 // result => "apple pear kiwi lemon"
 cssClasses.RenderClassAttribute();
 // result => class="apple pear kiwi lemon"
+```
